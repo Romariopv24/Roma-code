@@ -41,7 +41,7 @@ export const LayoutSection = () => {
         <p className="mt-8 md:text-lg font-poppins text-pretty text-gray-100 text-lg">Boost your business with our web design and development services. We create attractive, easy-to-use pages that are optimized to convert visitors into customers and make your brand stand out online!</p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <a href="#" className="rounded-md bg-bluetext px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#1a6bbf] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">About Me</a>
-          <a href="#" className="text-sm/6 font-semibold">Contact Me<span aria-hidden="true">&darr;</span></a>
+          <a href="#" className="rounded-md bg-bluetext px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#1a6bbf] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Contact Me<span aria-hidden="true">&darr;</span></a>
         </div>
       </div>
     </div>
