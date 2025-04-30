@@ -1,15 +1,15 @@
 import { rootImages } from '@/app/core/rootImages'
 import { MobileMenu } from './MobileMenu';
+import Image from 'next/image';
 
 export const LayoutSection = () => {
   return (
-  <>
-  <div className="bg-black" style={{height: '100vh', background: 'radial-gradient(circle at 1% 5%, #2183e8 5%, transparent 20%), radial-gradient(circle at 100% 100%, #2183e8 5%, transparent 20%)'  }}>
+  <div >
   <header className="absolute inset-x-0 top-0 z-50">
     <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
       <div className="flex lg:flex-1">
         <a href="#" className="-m-1.5 p-1.5 flex flex-row align-center items-center gap-x-2.5">
-          <img className="h-12 w-auto" src={rootImages.logo} alt="Roma-Code" />
+          <Image width={48} height={48} src={rootImages.logo} alt="Roma-Code" />
           <h3 className="text-white text-xl font-semibold">Roma Code</h3>
         </a>
       </div>
@@ -50,6 +50,5 @@ export const LayoutSection = () => {
     </div>
   </div>
 </div>
-  </>
   )
 }
