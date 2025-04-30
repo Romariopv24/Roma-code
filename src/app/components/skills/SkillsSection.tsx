@@ -121,7 +121,7 @@ export const SkillsSection = () => {
       {technologies.map((tech: { icon: string; name: string; }) => (
         <div key={tech.name} className="flex p-3 w-auto my-auto justify-center border-2 border-bluetext gap-2
 rounded-md mt-4 hover:bg-bluetext hover:text-white transition duration-300 ease-in-out">
-        <Image src={tech.icon} alt={tech.name} width={15} height={0} />
+        <Image src={tech.icon} alt={tech.name} width={17} height={0} />
         <p>
             {tech.name}
         </p>
