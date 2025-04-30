@@ -113,11 +113,11 @@ export const SkillsSection = () => {
       <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-bluetext font-poppins sm:text-5xl lg:text-balance">
          Skills and Technologies
         </p>
-        <p className="mt-6 text-lg/8 font-poppins">
+        <p className="mt-8 text-lg/8 font-poppins">
         Over the years, I have worked with a variety of technologies. Here are some of the technologies I have experience with:
         </p>
       </div>
-      <div className='mx-auto mt-16 flex max-w-3xl flex-wrap justify-center gap-2'>
+      <div className='mx-auto mt-11 flex max-w-3xl flex-wrap justify-center gap-2'>
       {technologies.map((tech: { icon: string; name: string; }) => (
         <div key={tech.name} className="flex p-3 w-auto my-auto justify-center border-2 border-bluetext gap-2
 rounded-md mt-4 hover:bg-bluetext hover:text-white transition duration-300 ease-in-out">
