@@ -1,4 +1,3 @@
-import React from 'react'
 
 
 const features = [
@@ -47,10 +46,10 @@ export const AboutComponent = () => {
     <div className="py-24 sm:py-32">
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl lg:text-center">
-        <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-bluetext font-poppins sm:text-5xl lg:text-balance">
+        <p className="mt-2 text-4xl text-center font-semibold tracking-tight text-pretty text-bluetext font-poppins sm:text-5xl lg:text-balance">
          About Me
         </p>
-        <p className="mt-6 text-lg/8 font-poppins">
+        <p className="mt-6 text-lg/8 font-poppins text-center">
         Full-Stack Developer with experience building 10+ web applications. Proficient in JavaScript, TypeScript, and PHP. Skilled in Front-End technologies like React.js, Next.js, and Vue.js, and Back-End development with Express.js. Experienced in managing both NoSQL (MongoDB) and SQL databases
         </p>
       </div>
