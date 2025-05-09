@@ -14,7 +14,7 @@ export const SkillsSection = () => {
          Skills and Technologies
         </p>
         <p className="mt-8 text-lg/8 font-poppins text-center">
-        Over the years, I have worked with a variety of technologies. Here are some of the technologies I have experience with:
+        Over the years, I have worked with a variety of technologies. Here are some of them I have experience with:
         </p>
       </div>
       <div className='mx-auto mt-11 flex max-w-3xl flex-wrap justify-center gap-2'>
