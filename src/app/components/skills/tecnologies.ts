@@ -78,10 +78,10 @@ export const technologies: Technologies = [
         icon: images.mysql,
         name: 'MySQL',
     },
-    {
-        icon: images.cSharp,
-        name: 'C#',
-    },
+    // {
+    //     icon: images.cSharp,
+    //     name: 'C#',
+    // },
     {
         icon: images.python,
         name: 'Python',
