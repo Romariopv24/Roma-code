@@ -1,3 +1,4 @@
+'use client'
 import { AboutComponent } from "./components/about/AboutComponent";
 import { ContactSection } from "./components/contact/ContactSection";
 import { Footer } from "./components/footer/Footer";
