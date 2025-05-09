@@ -20,7 +20,7 @@ export const ProjectsComponent = () => {
         creating impactful digital experiences.
             </p>
           </div>
-            <div className='flex flex-col mt-16 p-5 gap-10' >
+            <div className='flex flex-col mt-16 lg:p-5 gap-10' >
                 {projects.map((project, index) => (
                     <div key={index} className='flex flex-col lg:flex-row-reverse gap-3 p-3 bg-sky-950 rounded-lg shadow-lg'>
                         <Image 
