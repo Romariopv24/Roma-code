@@ -1,5 +1,6 @@
 const dir = '/images/'
 const icons = '/images/technologies-images/'
+const portfolio = '/images/portfolio-images/'
 
 export const rootImages = {
     logo: `${dir}logo.png`,
@@ -28,5 +29,12 @@ export const rootImages = {
         github: `${icons}github.svg`,
         figma: `${icons}figma.svg`,
         vercel: `${icons}vercel.svg`,
+    },
+    projects: {
+        lvlm: `${portfolio}lvlm.jpg`,
+        nfanst: `${portfolio}nfanst.jpg`,
+        dgalery: `${portfolio}dgalery.jpg`,
+        nasa: `${portfolio}nasa.jpg`,
+        carry: `${portfolio}carry.jpg`,
     }
 }

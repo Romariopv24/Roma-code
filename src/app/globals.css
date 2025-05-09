@@ -23,3 +23,7 @@ body {
   background: var(--background);
   font-family: var(--font-mont);
 }
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
