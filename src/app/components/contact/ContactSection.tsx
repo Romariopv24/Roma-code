@@ -20,7 +20,7 @@ export const ContactSection = () => {
       href={`https://mail.google.com/mail/?view=cm&fs=1&to=${email}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      className="rounded-md bg-bluetext px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#1a6bbf] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
      Let&#39;s get in touch
     </a>

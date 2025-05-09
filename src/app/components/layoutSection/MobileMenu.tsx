@@ -39,12 +39,12 @@ export const MobileMenu = () => {
       <div className="mt-6 flow-root">
         <div className="-my-6 divide-y divide-gray-500/10">
           <div className="space-y-2 py-6">
-            <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">About Me</a>
-            <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">Skills</a>
-            <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">Services</a>
+            <a href="#about" onClick={() => setMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">About Me</a>
+            <a href="#skills" onClick={() => setMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">Skills</a>
+            <a href="#projects" onClick={() => setMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">Projects</a>
           </div>
           <div className="py-6">
-            <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">Contact Me</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-[#1a6bbf] hover:text-white">Contact Me</a>
           </div>
         </div>
       </div>

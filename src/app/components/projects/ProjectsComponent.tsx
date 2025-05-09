@@ -40,7 +40,7 @@ export const ProjectsComponent = () => {
                                 ))}
                             </div>
                             <div className='flex justify-center items-center mt-4'>
-                            <a href={project.link} target="_blank" rel="noopener noreferrer" className='mt-4 bg-bluetext text-white px-4 py-2 rounded-md'>View Project</a>
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" className='mt-4 rounded-md bg-bluetext px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#1a6bbf] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"'>View Project</a>
                             </div>
                         </div>
                     </div>
