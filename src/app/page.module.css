@@ -4,3 +4,11 @@
                 radial-gradient(circle at -1% 88%, #2183e8 5%, transparent 20%)
                 ;
 }
+
+@media (max-width: 1024px) {
+    .container {
+        background: radial-gradient(circle at 1% -5%, #2183e8 1%, transparent 15%),
+                    radial-gradient(circle at 102% 50%, #2183e8 1%, transparent 15%),
+                    radial-gradient(circle at -1% 88%, #2183e8 1%, transparent 15%);
+    }
+}

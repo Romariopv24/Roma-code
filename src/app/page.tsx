@@ -1,4 +1,5 @@
 import { AboutComponent } from "./components/about/AboutComponent";
+import { ContactSection } from "./components/contact/ContactSection";
 import { LayoutSection } from "./components/layoutSection/LayoutSection";
 import { ProjectsComponent } from "./components/projects/ProjectsComponent";
 import { SkillsSection } from "./components/skills/SkillsSection";
@@ -13,6 +14,7 @@ export default function Home() {
    <AboutComponent />
     <SkillsSection />
     <ProjectsComponent />
+    <ContactSection />
    </div>
    </>
 
