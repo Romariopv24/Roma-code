@@ -30,7 +30,7 @@ export const projectInfo: Project[] = [
         image: images.dgalery,
         title: 'DGalery',
         description: 'Dgalery is an AI-powered platform that transforms digital art creation, allowing users to generate and explore unique artworks effortlessly through an intuitive, interactive experience.',
-        technologies: ['React', 'Next.js', 'Angular',  'Material UI', 'Node.js', 'Express','Python', 'Flask','MongoDB'],    
+        technologies: ['Angular','React', 'Next.js', 'Angular',  'Material UI', 'Node.js', 'Express','Python', 'Flask','MongoDB'],    
         link: 'https://dgalery.com/',
     },
     {

@@ -35,6 +35,10 @@ export const technologies: Technologies = [
         name: 'Next.js',
     },
     {
+        icon:images.angular,
+        name: 'Angular',
+    },
+    {
         icon: images.astro,
         name: 'Astro',
     },

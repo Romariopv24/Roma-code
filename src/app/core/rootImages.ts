@@ -12,6 +12,7 @@ export const rootImages = {
         react: `${icons}react.svg`,
         nextjs: `${icons}nextwhite.svg`,
         astro : `${icons}astro.svg`,
+        angular : `${icons}angular.svg`,
         vue: `${icons}vue.svg`,
         redux: `${icons}redux.svg`,
         tailwind: `${icons}tailwindcss.svg`,

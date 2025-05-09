@@ -29,7 +29,7 @@ export const ProjectsComponent = () => {
                           alt={project.title} 
                           width={400} 
                           height={400} 
-                          className='w-full h-auto lg:w-1/2 lg:h-auto rounded-xl transform transition-transform duration-300 hover:scale-90 cursor-pointer' 
+                          className='w-full p-2 h-auto lg:w-1/2 lg:h-auto rounded-3xl transform transition-transform duration-300 hover:scale-105 cursor-pointer' 
                         />
                         <div className='flex flex-col lg:w-1/2 lg:ml-4 p-3'>
                             <h2 className='lg:text-5xl text-xl text-center lg:text-left font-bold  uppercase'>{project.title}</h2>
