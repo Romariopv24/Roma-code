@@ -51,7 +51,7 @@ export const AboutComponent = () => {
          About Me
         </p>
         <p className="mt-6 text-lg/8 font-poppins text-center">
-        Full-Stack Developer with 3 years of experience building 13 web applications. Proficient in JavaScript, TypeScript, and PHP. Skilled in Front-End technologies like React.js, Next.js, and Vue.js, and Back-End development with Express.js. Experienced in managing both NoSQL (MongoDB) and SQL databases
+        Full-Stack Developer with 3 years of experience building 13+ web applications. Proficient in JavaScript, TypeScript, and PHP. Skilled in Front-End technologies like React.js, Next.js, and Vue.js, and Back-End development with Express.js. Experienced in managing both NoSQL (MongoDB) and SQL databases
         </p>
       </div>
       <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
