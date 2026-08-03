@@ -1,6 +1,16 @@
-import React from 'react';
+'use client';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const Footer = () => {
+  const { t } = useLanguage();
+
+  const navLinks = [
+    { href: '#about',    label: t.nav.about },
+    { href: '#skills',   label: t.nav.skills },
+    { href: '#projects', label: t.nav.projects },
+    { href: '#contact',  label: t.nav.contact },
+  ];
+
   return (
     <footer className="bg-surface border-t border-white/10 py-12">
       <div className="max-w-[1200px] mx-auto px-5 md:px-[24px] flex flex-col items-center gap-2">
@@ -11,13 +21,13 @@ export const Footer = () => {
 
         {/* Nav links */}
         <div className="flex gap-8 mb-8 flex-wrap justify-center">
-          {['#about', '#skills', '#projects', '#contact'].map((href) => (
+          {navLinks.map(({ href, label }) => (
             <a
               key={href}
               href={href}
               className="font-hanken text-[16px] leading-[24px] text-on-surface-variant hover:text-primary transition-colors"
             >
-              {href.replace('#', '').charAt(0).toUpperCase() + href.slice(2)}
+              {label}
             </a>
           ))}
         </div>
@@ -25,7 +35,7 @@ export const Footer = () => {
         {/* Copyright */}
         <div className="text-center">
           <p className="font-hanken text-[16px] leading-[24px] text-on-surface-variant opacity-60">
-            Copyright © 2026 Romario Parra. All rights reserved.
+            Copyright {t.footer.copyright}
           </p>
           <div className="mt-4 flex gap-4 justify-center">
             <a

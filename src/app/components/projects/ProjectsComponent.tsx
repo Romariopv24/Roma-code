@@ -1,23 +1,23 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { useLanguage } from '../../context/LanguageContext';
 import { projectInfo } from './projectInfo';
 
-// Map tech tags to color accents
 const tagColors: Record<string, string> = {
-  'React': 'bg-primary/20 text-primary border-primary/30',
+  React:   'bg-primary/20 text-primary border-primary/30',
   'Next.js': 'bg-primary/20 text-primary border-primary/30',
-  'Vue.js': 'bg-tertiary/20 text-tertiary border-tertiary/30',
-  'Angular': 'bg-primary/20 text-primary border-primary/30',
+  'Vue.js':  'bg-tertiary/20 text-tertiary border-tertiary/30',
+  Angular:   'bg-primary/20 text-primary border-primary/30',
   'Node.js': 'bg-tertiary/20 text-tertiary border-tertiary/30',
-  'MongoDB': 'bg-primary/20 text-primary border-primary/30',
-  'Tailwind': 'bg-tertiary/20 text-tertiary border-tertiary/30',
-  'default': 'bg-primary/20 text-primary border-primary/30',
+  MongoDB:   'bg-primary/20 text-primary border-primary/30',
+  Tailwind:  'bg-tertiary/20 text-tertiary border-tertiary/30',
+  default:   'bg-primary/20 text-primary border-primary/30',
 };
-
 const getTagClass = (tech: string) => tagColors[tech] || tagColors['default'];
 
 export const ProjectsComponent = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,10 +41,11 @@ export const ProjectsComponent = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <h2 className="font-hanken font-bold text-[48px] leading-[56px] text-on-surface mb-4">
-              Selected <span className="text-primary">Projects</span>
+              {t.projects.title}{' '}
+              <span className="text-primary">{t.projects.titleHighlight}</span>
             </h2>
             <p className="text-on-surface-variant max-w-xl font-hanken text-[18px] leading-[28px]">
-              A curated selection of my recent work in web engineering and visual design.
+              {t.projects.subtitle}
             </p>
           </div>
           <div className="flex gap-4">
@@ -67,7 +68,6 @@ export const ProjectsComponent = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {projectInfo.map((project, idx) => (
             <div key={idx} className="group">
-              {/* Image container */}
               <div className="aspect-video rounded-2xl overflow-hidden glass-card mb-6 relative">
                 <Image
                   src={project.image}
@@ -75,9 +75,7 @@ export const ProjectsComponent = () => {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020617] to-transparent opacity-60" />
-                {/* Tech tags */}
                 <div className="absolute bottom-6 left-6 flex gap-2 flex-wrap">
                   {project.technologies.slice(0, 2).map((tech) => (
                     <span
@@ -89,7 +87,6 @@ export const ProjectsComponent = () => {
                   ))}
                 </div>
               </div>
-              {/* Info */}
               <h3 className="font-hanken font-semibold text-[32px] leading-[40px] mb-2">
                 {project.title}
               </h3>
@@ -102,7 +99,7 @@ export const ProjectsComponent = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-primary font-geist text-[14px] tracking-[0.05em] uppercase hover:gap-4 transition-all"
               >
-                View Project
+                {t.projects.viewProject}
                 <span className="material-symbols-outlined">arrow_forward</span>
               </a>
             </div>
