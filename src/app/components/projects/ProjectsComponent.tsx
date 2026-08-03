@@ -1,53 +1,114 @@
-'use client'
-import React from 'react'
-import { projectInfo } from './projectInfo'
-import Image from 'next/image'
+'use client';
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { projectInfo } from './projectInfo';
+
+// Map tech tags to color accents
+const tagColors: Record<string, string> = {
+  'React': 'bg-primary/20 text-primary border-primary/30',
+  'Next.js': 'bg-primary/20 text-primary border-primary/30',
+  'Vue.js': 'bg-tertiary/20 text-tertiary border-tertiary/30',
+  'Angular': 'bg-primary/20 text-primary border-primary/30',
+  'Node.js': 'bg-tertiary/20 text-tertiary border-tertiary/30',
+  'MongoDB': 'bg-primary/20 text-primary border-primary/30',
+  'Tailwind': 'bg-tertiary/20 text-tertiary border-tertiary/30',
+  'default': 'bg-primary/20 text-primary border-primary/30',
+};
+
+const getTagClass = (tech: string) => tagColors[tech] || tagColors['default'];
 
 export const ProjectsComponent = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-    const projects = projectInfo
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      },
+      { threshold: 0.1 }
+    );
+    const els = sectionRef.current?.querySelectorAll('.reveal');
+    els?.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-        <div className="py-24 sm:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-          <p className="mt-2 text-center text-4xl font-semibold tracking-tight text-pretty text-bluetext font-poppins sm:text-5xl lg:text-balance">
-             Projects
-            </p>
-            <p className="mt-8 text-lg/8 font-poppins text-center">
-            These are some of the projects I&apos;ve built and contributed to, each representing unique challenges 
-        and innovative solutions. From concept to deployment, each project reflects my dedication to 
-        creating impactful digital experiences.
+    <div ref={sectionRef} className="max-w-[1200px] mx-auto px-5 md:px-[24px]">
+      <section id="projects" className="py-[120px] scroll-mt-24 reveal">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <h2 className="font-hanken font-bold text-[48px] leading-[56px] text-on-surface mb-4">
+              Selected <span className="text-primary">Projects</span>
+            </h2>
+            <p className="text-on-surface-variant max-w-xl font-hanken text-[18px] leading-[28px]">
+              A curated selection of my recent work in web engineering and visual design.
             </p>
           </div>
-            <div className='flex flex-col mt-16 lg:p-5 gap-10' >
-                {projects.map((project, index) => (
-                    <div key={index} className='flex flex-col lg:flex-row-reverse gap-3 p-3 bg-sky-950 rounded-lg shadow-lg'>
-                        <Image 
-                          onClick={() => window.open(project.link, '_blank')}
-                          src={project.image} 
-                          alt={project.title} 
-                          width={400} 
-                          height={400} 
-                          className='w-full p-2 h-auto lg:w-1/2 lg:h-auto rounded-3xl transform transition-transform duration-300 hover:scale-105 cursor-pointer' 
-                        />
-                        <div className='flex flex-col lg:w-1/2 lg:ml-4 p-3'>
-                            <h2 className='lg:text-5xl text-xl text-center lg:text-left font-bold  uppercase'>{project.title}</h2>
-                            <p className='text-lg text-center lg:text-left text-gray-300 mt-2'>{project.description}</p>
-                            <div className='flex flex-wrap gap-2 mt-4'>
-                                {project.technologies.map((tech, index) => (
-                                    <span key={index} className='bg-gray-700 text-white px-2 py-1 rounded-md'>{tech}</span>
-                                ))}
-                            </div>
-                            <div className='flex justify-center items-center mt-4'>
-                            <a href={project.link} target="_blank" rel="noopener noreferrer" className='mt-4 rounded-md bg-bluetext px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#1a6bbf] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"'>View Project</a>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            
-            </div>
-            </div>
+          <div className="flex gap-4">
+            <button
+              className="p-3 rounded-full border border-white/10 hover:border-primary transition-colors"
+              aria-label="Previous"
+            >
+              <span className="material-symbols-outlined">west</span>
+            </button>
+            <button
+              className="p-3 rounded-full border border-white/10 hover:border-primary transition-colors"
+              aria-label="Next"
+            >
+              <span className="material-symbols-outlined">east</span>
+            </button>
+          </div>
         </div>
-  )
-}
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {projectInfo.map((project, idx) => (
+            <div key={idx} className="group">
+              {/* Image container */}
+              <div className="aspect-video rounded-2xl overflow-hidden glass-card mb-6 relative">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#020617] to-transparent opacity-60" />
+                {/* Tech tags */}
+                <div className="absolute bottom-6 left-6 flex gap-2 flex-wrap">
+                  {project.technologies.slice(0, 2).map((tech) => (
+                    <span
+                      key={tech}
+                      className={`px-3 py-1 text-[10px] font-bold rounded uppercase tracking-widest border ${getTagClass(tech)}`}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              {/* Info */}
+              <h3 className="font-hanken font-semibold text-[32px] leading-[40px] mb-2">
+                {project.title}
+              </h3>
+              <p className="text-on-surface-variant font-hanken text-[16px] leading-[24px] mb-6">
+                {project.description}
+              </p>
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-primary font-geist text-[14px] tracking-[0.05em] uppercase hover:gap-4 transition-all"
+              >
+                View Project
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+};

@@ -1,36 +1,68 @@
-import Image from 'next/image'
-import React from 'react'
-import { technologies } from './tecnologies'
+'use client';
+import { useEffect, useRef } from 'react';
 
+const skills = [
+  { icon: 'html', label: 'HTML5' },
+  { icon: 'css', label: 'CSS3' },
+  { icon: 'javascript', label: 'JavaScript' },
+  { icon: 'data_object', label: 'TypeScript' },
+  { icon: 'deployed_code', label: 'React' },
+  { icon: 'bolt', label: 'Next.js' },
+  { icon: 'settings_input_component', label: 'Node.js' },
+  { icon: 'palette', label: 'Tailwind' },
+  { icon: 'storage', label: 'MongoDB' },
+  { icon: 'draw', label: 'Figma' },
+  { icon: 'fork_right', label: 'Git' },
+  { icon: 'api', label: 'REST API' },
+];
 
 export const SkillsSection = () => {
-    const techno = technologies
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-    return (
-    <div className="py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-      <div className="mx-auto max-w-2xl lg:text-center">
-      <p className="mt-2 text-center text-4xl font-semibold tracking-tight text-pretty text-bluetext font-poppins sm:text-5xl lg:text-balance">
-         Skills and Technologies
-        </p>
-        <p className="mt-8 text-lg/8 font-poppins text-center">
-        Over the years, I have worked with a variety of technologies. Here are some of them I have experience with:
-        </p>
-      </div>
-      <div className='mx-auto mt-11 flex max-w-3xl flex-wrap justify-center gap-2'>
-      {techno.map((tech: { icon: string; name: string; }) => (
-        <div key={tech.name} className="flex p-3 w-auto my-auto justify-center border-2 border-bluetext gap-2
-rounded-md mt-4 hover:bg-bluetext hover:text-white transition duration-300 ease-in-out">
-        <Image src={tech.icon} alt={tech.name} width={17} height={0} />
-        <p>
-            {tech.name}
-        </p>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      },
+      { threshold: 0.1 }
+    );
+    const els = sectionRef.current?.querySelectorAll('.reveal');
+    els?.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={sectionRef} className="max-w-[1200px] mx-auto px-5 md:px-[24px]">
+      <section id="skills" className="py-[120px] scroll-mt-24 reveal">
+        <div className="glass-card rounded-3xl p-12 relative overflow-hidden">
+          {/* Background icon decoration */}
+          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none select-none">
+            <span className="material-symbols-outlined" style={{ fontSize: '200px' }}>
+              code
+            </span>
+          </div>
+
+          <h2 className="font-hanken font-bold text-[48px] leading-[56px] text-on-surface mb-12">
+            Technical <span className="text-primary">Toolkit</span>
+          </h2>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {skills.map((skill) => (
+              <div
+                key={skill.label}
+                className="chip-gradient rounded-xl p-4 flex items-center gap-3 hover:bg-tertiary/10 transition-colors cursor-default"
+              >
+                <span className="material-symbols-outlined text-tertiary">{skill.icon}</span>
+                <span className="font-geist text-[14px] leading-[20px] tracking-[0.05em] font-medium">
+                  {skill.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-      </div>
-      
-        </div>
+      </section>
     </div>
-
-  )
-}
+  );
+};
