@@ -37,5 +37,6 @@ export const rootImages = {
         dgalery: `${portfolio}dgalery.jpg`,
         nasa: `${portfolio}nasa.jpg`,
         carry: `${portfolio}carry.jpg`,
+        paradise: `${portfolio}paradise.jpg`,
     }
 }

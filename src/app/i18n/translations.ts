@@ -1,4 +1,68 @@
-export const translations = {
+export interface TranslationSchema {
+  nav: {
+    about: string;
+    skills: string;
+    projects: string;
+    contact: string;
+  };
+  hero: {
+    badge: string;
+    title: string;
+    titleHighlight: string;
+    description: string;
+    cta_about: string;
+    cta_contact: string;
+  };
+  about: {
+    title: string;
+    titleHighlight: string;
+    paragraph1: string;
+    paragraph2: string;
+  };
+  expertise: {
+    title: string;
+    titleHighlight: string;
+    subtitle: string;
+    cards: {
+      frontend: { title: string; description: string };
+      backend: { title: string; description: string };
+      database: { title: string; description: string };
+      design: { title: string; description: string };
+    };
+  };
+  skills: {
+    title: string;
+    titleHighlight: string;
+  };
+  projects: {
+    title: string;
+    titleHighlight: string;
+    subtitle: string;
+    viewProject: string;
+  };
+  contact: {
+    title: string;
+    titleHighlight: string;
+    subtitle: string;
+    namePlaceholder: string;
+    emailPlaceholder: string;
+    messagePlaceholder: string;
+    captchaLabel: string;
+    captchaPlaceholder: string;
+    captchaRefresh: string;
+    sendButton: string;
+    sendingButton: string;
+    successAlert: string;
+    emailLabel: string;
+    linkedinLabel: string;
+    githubLabel: string;
+  };
+  footer: {
+    copyright: string;
+  };
+}
+
+export const translations: Record<'en' | 'es', TranslationSchema> = {
   en: {
     nav: {
       about: 'About Me',
@@ -44,9 +108,9 @@ export const translations = {
             'Architecting efficient data structures and optimizing queries with MongoDB, PostgreSQL, and Redis.',
         },
         design: {
-          title: 'Design Systems',
+          title: 'UI/UX & Web Design',
           description:
-            'Creating consistent, modular design tokens and components for unified brand identities.',
+            'Crafting clean, modern user interfaces and intuitive web experiences centered on usability and visual elegance.',
         },
       },
     },
@@ -69,7 +133,12 @@ export const translations = {
       namePlaceholder: 'Your Name',
       emailPlaceholder: 'Your Email',
       messagePlaceholder: 'Your Message',
+      captchaLabel: 'Security Verification',
+      captchaPlaceholder: 'Answer',
+      captchaRefresh: 'Refresh CAPTCHA',
       sendButton: 'Send Message',
+      sendingButton: 'Sending...',
+      successAlert: 'Your message has been sent successfully! I will reply soon.',
       emailLabel: 'Email',
       linkedinLabel: 'LinkedIn',
       githubLabel: 'GitHub',
@@ -111,7 +180,7 @@ export const translations = {
         frontend: {
           title: 'Frontend',
           description:
-            'Creando interfaces de usuario responsivas e interactivas con los ecosistemas modernos de React y Next.js.',
+            'Creando interfaces de usuario responsivas e interactivas con los ecosistemas modernos de React and Next.js.',
         },
         backend: {
           title: 'Backend',
@@ -124,9 +193,9 @@ export const translations = {
             'Arquitectando estructuras de datos eficientes y optimizando consultas con MongoDB, PostgreSQL y Redis.',
         },
         design: {
-          title: 'Sistemas de Diseño',
+          title: 'Diseño UI/UX & Web',
           description:
-            'Creando tokens de diseño modulares y consistentes y componentes para identidades de marca unificadas.',
+            'Diseñando interfaces modernas, limpias y experiencias web intuitivas centradas en la usabilidad y la elegancia visual.',
         },
       },
     },
@@ -149,7 +218,12 @@ export const translations = {
       namePlaceholder: 'Tu Nombre',
       emailPlaceholder: 'Tu Correo',
       messagePlaceholder: 'Tu Mensaje',
+      captchaLabel: 'Verificación de Seguridad',
+      captchaPlaceholder: 'Respuesta',
+      captchaRefresh: 'Recargar CAPTCHA',
       sendButton: 'Enviar Mensaje',
+      sendingButton: 'Enviando...',
+      successAlert: '¡Tu mensaje ha sido enviado con éxito! Te responderé pronto.',
       emailLabel: 'Correo',
       linkedinLabel: 'LinkedIn',
       githubLabel: 'GitHub',
@@ -158,7 +232,7 @@ export const translations = {
       copyright: '© 2026 Romario Parra. Todos los derechos reservados.',
     },
   },
-} as const;
+};
 
-export type Locale = keyof typeof translations;
-export type Translations = typeof translations.en;
+export type Locale = 'en' | 'es';
+export type Translations = TranslationSchema;

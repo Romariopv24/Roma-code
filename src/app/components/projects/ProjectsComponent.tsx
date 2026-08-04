@@ -17,7 +17,7 @@ const tagColors: Record<string, string> = {
 const getTagClass = (tech: string) => tagColors[tech] || tagColors['default'];
 
 export const ProjectsComponent = () => {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export const ProjectsComponent = () => {
                 {project.title}
               </h3>
               <p className="text-on-surface-variant font-hanken text-[16px] leading-[24px] mb-6">
-                {project.description}
+                {locale === 'es' ? project.descriptionEs : project.description}
               </p>
               <a
                 href={project.link}

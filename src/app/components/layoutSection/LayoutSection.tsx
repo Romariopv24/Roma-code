@@ -39,7 +39,7 @@ export const LayoutSection = () => {
 
       {/* Navigation */}
       <header
-        className={`sticky top-0 z-50 border-b border-white/10 h-20 transition-all duration-300 ${
+        className={`sticky top-0 z-50 border-b border-white/10 h-16 transition-all duration-300 ${
           scrolled
             ? 'bg-surface/80 backdrop-blur-xl shadow-lg'
             : 'bg-surface/60 backdrop-blur-xl'
@@ -47,18 +47,18 @@ export const LayoutSection = () => {
       >
         <nav className="flex justify-between items-center w-full px-5 md:px-[24px] max-w-[1200px] mx-auto h-full gap-4">
           {/* Logo */}
-          <div className="font-hanken font-bold text-[28px] leading-[36px] text-on-surface shrink-0">
+          <div className="font-hanken font-bold text-[24px] leading-[30px] text-on-surface shrink-0">
             Roma Code
           </div>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-7">
             {navLinks.map(({ href, label }) => (
               <a
                 key={href}
                 href={href}
                 onClick={(e) => smoothScroll(e, href)}
-                className="font-geist text-[14px] leading-[20px] tracking-[0.05em] uppercase text-on-surface-variant hover:text-primary transition-colors duration-300"
+                className="font-geist text-[13px] leading-[18px] tracking-[0.05em] uppercase text-on-surface-variant hover:text-primary transition-colors duration-300"
               >
                 {label}
               </a>
@@ -66,7 +66,7 @@ export const LayoutSection = () => {
             <a
               href="#contact"
               onClick={(e) => smoothScroll(e, '#contact')}
-              className="bg-primary text-on-primary font-geist text-[14px] leading-[20px] tracking-[0.1em] uppercase px-6 py-2 rounded-full hover:shadow-[0_0_15px_rgba(165,200,255,0.5)] transition-all active:scale-95"
+              className="bg-primary text-on-primary font-geist text-[13px] leading-[18px] tracking-[0.1em] uppercase px-5 py-2 rounded-full hover:shadow-[0_0_15px_rgba(165,200,255,0.5)] transition-all active:scale-95"
             >
               {t.nav.contact}
             </a>
@@ -79,14 +79,13 @@ export const LayoutSection = () => {
                   onClick={() => setLocale(lang)}
                   title={lang === 'en' ? 'English' : 'Español'}
                   aria-label={lang === 'en' ? 'Switch to English' : 'Cambiar a Español'}
-                  className={`flex items-center gap-1 px-2 py-1 rounded-full text-[12px] font-geist tracking-wider uppercase transition-all duration-200 ${
+                  className={`text-2xl leading-none px-2 py-0.5 rounded-full transition-all duration-200 ${
                     locale === lang
-                      ? 'bg-primary/20 text-primary'
-                      : 'text-on-surface-variant hover:text-on-surface'
+                      ? 'bg-primary/20 scale-110'
+                      : 'opacity-50 hover:opacity-100'
                   }`}
                 >
-                  <span className="text-base leading-none">{flags[lang].emoji}</span>
-                  <span className="hidden lg:inline">{flags[lang].label}</span>
+                  {flags[lang].emoji}
                 </button>
               ))}
             </div>

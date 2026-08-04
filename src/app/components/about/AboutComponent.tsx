@@ -2,7 +2,6 @@
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 
-const cardKeys = ['frontend', 'backend', 'database', 'design'] as const;
 
 const cardMeta = [
   { key: 'frontend', icon: 'developer_mode_tv', color: 'text-primary', bg: 'bg-primary/10' },
