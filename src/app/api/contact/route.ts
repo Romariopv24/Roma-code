@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { createHmac, timingSafeEqual } from 'crypto';
 
 // ─── CAPTCHA helpers (stateless — works on Vercel serverless) ────────────────
-// The token encodes: answer + expiry + HMAC signature.
-// No in-memory store needed → safe across multiple serverless instances.
-
 const CAPTCHA_SECRET = process.env.CAPTCHA_SECRET || 'roma-code-captcha-secret-2024';
 const CAPTCHA_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -25,7 +22,6 @@ function verifyCaptchaToken(token: string): { answer: number; expiresAt: number 
     const payload = `${answerStr}:${expiresAtStr}`;
     const expectedSig = createHmac('sha256', CAPTCHA_SECRET).update(payload).digest('hex');
 
-    // Constant-time comparison to prevent timing attacks
     const sigBuf = Buffer.from(sig, 'hex');
     const expectedBuf = Buffer.from(expectedSig, 'hex');
     if (sigBuf.length !== expectedBuf.length) return null;
@@ -54,7 +50,7 @@ export async function GET() {
   return NextResponse.json({ token, question });
 }
 
-// ─── POST /api/contact → validate captcha + send email ──────────────────────
+// ─── POST /api/contact → validate captcha + send email via Resend ────────────
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -105,31 +101,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // --- Send email via nodemailer ---
-    const targetEmail = process.env.EMAIL_TO || 'rparradev24@gmail.com';
-    const emailUser = process.env.EMAIL_USER || targetEmail;
-    const emailPass = process.env.EMAIL_PASS;
-
-    if (!emailPass || emailPass === 'your_gmail_app_password_here' || emailPass.trim() === '') {
-      console.error('EMAIL_PASS is not configured in environment variables.');
+    // --- Send email via Resend ---
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error('RESEND_API_KEY is not configured.');
       return NextResponse.json(
         { error: 'El servidor de correo no está configurado. Contacta al administrador.' },
         { status: 500 }
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: emailUser,
-        pass: emailPass,
-      },
-    });
+    const resend = new Resend(apiKey);
+    const targetEmail = process.env.EMAIL_TO || 'rparradev24@gmail.com';
 
-    await transporter.sendMail({
-      from: `"Roma Code Portfolio" <${emailUser}>`,
-      to: targetEmail,
-      replyTo: email,
+    const { error: resendError } = await resend.emails.send({
+      from: 'Roma Code Portfolio <onboarding@resend.dev>',
+      to: [targetEmail],
+      reply_to: email,
       subject: `📬 Nuevo mensaje de ${name} — Roma Code Portfolio`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #e0e3e5; border-radius: 16px; padding: 32px;">
@@ -142,6 +130,14 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     });
+
+    if (resendError) {
+      console.error('Resend error:', resendError);
+      return NextResponse.json(
+        { error: `Error al enviar correo: ${resendError.message}` },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
