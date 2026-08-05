@@ -129,7 +129,7 @@ export const ContactSection = () => {
   return (
     <div ref={sectionRef} className="max-w-[1200px] mx-auto px-5 md:px-[24px]">
       <section id="contact" className="py-[120px] mb-24 scroll-mt-24 reveal">
-        <div className="glass-card rounded-[40px] p-12 md:p-24 text-center relative overflow-hidden">
+        <div className="glass-card rounded-[40px] p-6 md:p-12 md:p-24 text-center relative overflow-hidden">
           {/* Background glow */}
           <div className="absolute inset-0 pointer-events-none opacity-10 bg-gradient-to-br from-primary/20 via-transparent to-tertiary/20" />
 
@@ -198,13 +198,13 @@ export const ContactSection = () => {
 
             {/* CAPTCHA Box */}
             <div className="bg-surface-container/30 border border-white/10 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3 text-on-surface-variant font-hanken text-[14px]">
-                <span className="material-symbols-outlined text-primary text-xl">
+              <div className="flex items-center gap-2 text-on-surface-variant font-hanken text-[11px] sm:text-[14px]">
+                <span className="material-symbols-outlined text-primary text-base sm:text-xl shrink-0">
                   shield
                 </span>
-                <span>
+                <span className="whitespace-nowrap">
                   {t.contact.captchaLabel}:{' '}
-                  <strong className="text-primary font-geist text-[16px]">
+                  <strong className="text-primary font-geist text-[13px] sm:text-[16px]">
                     {captcha ? captcha.question : '...'} = ?
                   </strong>
                 </span>
@@ -228,9 +228,8 @@ export const ContactSection = () => {
                   className="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-lg border border-white/10 hover:border-primary/40"
                 >
                   <span
-                    className={`material-symbols-outlined text-xl ${
-                      captchaLoading ? 'animate-spin' : ''
-                    }`}
+                    className={`material-symbols-outlined text-xl ${captchaLoading ? 'animate-spin' : ''
+                      }`}
                   >
                     refresh
                   </span>
