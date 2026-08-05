@@ -3,18 +3,18 @@ import { useEffect, useRef } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 
 const skills = [
-  { icon: 'html',                        label: 'HTML5' },
-  { icon: 'css',                         label: 'CSS3' },
-  { icon: 'javascript',                  label: 'JavaScript' },
-  { icon: 'data_object',                 label: 'TypeScript' },
-  { icon: 'deployed_code',              label: 'React' },
-  { icon: 'bolt',                        label: 'Next.js' },
-  { icon: 'settings_input_component',   label: 'Node.js' },
-  { icon: 'palette',                     label: 'Tailwind' },
-  { icon: 'storage',                     label: 'MongoDB' },
-  { icon: 'draw',                        label: 'Figma' },
-  { icon: 'fork_right',                  label: 'Git' },
-  { icon: 'api',                         label: 'REST API' },
+  { icon: 'html', label: 'HTML5' },
+  { icon: 'css', label: 'CSS3' },
+  { icon: 'javascript', label: 'JavaScript' },
+  { icon: 'data_object', label: 'TypeScript' },
+  { icon: 'deployed_code', label: 'React' },
+  { icon: 'bolt', label: 'Next.js' },
+  { icon: 'settings_input_component', label: 'Node.js' },
+  { icon: 'palette', label: 'Tailwind' },
+  { icon: 'storage', label: 'MongoDB' },
+  { icon: 'draw', label: 'Figma' },
+  { icon: 'fork_right', label: 'Git' },
+  { icon: 'api', label: 'REST API' },
 ];
 
 export const SkillsSection = () => {
@@ -38,7 +38,7 @@ export const SkillsSection = () => {
   return (
     <div ref={sectionRef} className="max-w-[1200px] mx-auto px-5 md:px-[24px]">
       <section id="skills" className="py-[120px] scroll-mt-24 reveal">
-        <div className="glass-card rounded-3xl p-12 relative overflow-hidden">
+        <div className="glass-card rounded-3xl p-6 md:p-12 relative overflow-hidden">
           {/* Decorative background icon */}
           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none select-none">
             <span className="material-symbols-outlined" style={{ fontSize: '200px' }}>code</span>
@@ -53,10 +53,10 @@ export const SkillsSection = () => {
             {skills.map((skill) => (
               <div
                 key={skill.label}
-                className="chip-gradient rounded-xl p-3 md:p-4 flex items-center gap-2 min-w-0 overflow-hidden hover:bg-tertiary/10 transition-colors cursor-default"
+                className="chip-gradient rounded-xl p-3 md:p-4 flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 min-w-0 overflow-hidden hover:bg-tertiary/10 transition-colors cursor-default text-center md:text-left"
               >
-                <span className="material-symbols-outlined text-tertiary shrink-0 text-[20px]">{skill.icon}</span>
-                <span className="font-geist text-[12px] md:text-[14px] leading-[20px] tracking-[0.05em] font-medium truncate">
+                <span className="material-symbols-outlined text-tertiary shrink-0 text-[22px]">{skill.icon}</span>
+                <span className="font-geist text-[12px] md:text-[14px] leading-[16px] md:leading-[20px] tracking-[0.03em] font-medium w-full">
                   {skill.label}
                 </span>
               </div>
