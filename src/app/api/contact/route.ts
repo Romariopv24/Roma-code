@@ -1,22 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { createHmac, timingSafeEqual } from 'crypto';
 
-// ─── CAPTCHA Store (in-memory, per server instance) ────────────────────────
-const captchaStore = new Map<string, {
-  question: string;
-  answer: number;
-  expiresAt: number;
-}>();
+// ─── CAPTCHA helpers (stateless — works on Vercel serverless) ────────────────
+// The token encodes: answer + expiry + HMAC signature.
+// No in-memory store needed → safe across multiple serverless instances.
 
-// Clean up expired entries every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, val] of captchaStore) {
-    if (val.expiresAt < now) captchaStore.delete(key);
+const CAPTCHA_SECRET = process.env.CAPTCHA_SECRET || 'roma-code-captcha-secret-2024';
+const CAPTCHA_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+function signCaptcha(answer: number, expiresAt: number): string {
+  const payload = `${answer}:${expiresAt}`;
+  const sig = createHmac('sha256', CAPTCHA_SECRET).update(payload).digest('hex');
+  return Buffer.from(`${payload}:${sig}`).toString('base64url');
+}
+
+function verifyCaptchaToken(token: string): { answer: number; expiresAt: number } | null {
+  try {
+    const decoded = Buffer.from(token, 'base64url').toString('utf8');
+    const parts = decoded.split(':');
+    if (parts.length !== 3) return null;
+
+    const [answerStr, expiresAtStr, sig] = parts;
+    const payload = `${answerStr}:${expiresAtStr}`;
+    const expectedSig = createHmac('sha256', CAPTCHA_SECRET).update(payload).digest('hex');
+
+    // Constant-time comparison to prevent timing attacks
+    const sigBuf = Buffer.from(sig, 'hex');
+    const expectedBuf = Buffer.from(expectedSig, 'hex');
+    if (sigBuf.length !== expectedBuf.length) return null;
+    if (!timingSafeEqual(sigBuf, expectedBuf)) return null;
+
+    return { answer: parseInt(answerStr, 10), expiresAt: parseInt(expiresAtStr, 10) };
+  } catch {
+    return null;
   }
-}, 5 * 60 * 1000);
+}
 
-// ─── GET /api/contact → generate a captcha challenge ───────────────────────
+// ─── GET /api/contact → generate a captcha challenge ────────────────────────
 export async function GET() {
   const a = Math.floor(Math.random() * 10) + 1;
   const b = Math.floor(Math.random() * 10) + 1;
@@ -26,19 +47,14 @@ export async function GET() {
   ];
   const op = ops[Math.floor(Math.random() * ops.length)];
 
-  const token = crypto.randomUUID();
+  const expiresAt = Date.now() + CAPTCHA_TTL_MS;
+  const token = signCaptcha(op.answer, expiresAt);
   const question = `${a} ${op.symbol} ${b}`;
-
-  captchaStore.set(token, {
-    question,
-    answer: op.answer,
-    expiresAt: Date.now() + 10 * 60 * 1000, // 10 minutes
-  });
 
   return NextResponse.json({ token, question });
 }
 
-// ─── POST /api/contact → validate captcha + send email ─────────────────────
+// ─── POST /api/contact → validate captcha + send email ──────────────────────
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -61,115 +77,77 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // --- Validate CAPTCHA ---
-    const entry = captchaStore.get(captchaToken);
-    if (!entry) {
+    // --- Validate CAPTCHA (stateless) ---
+    if (!captchaToken) {
       return NextResponse.json(
-        { error: 'El CAPTCHA ha expirado o no es válido. Por favor recárgalo e inténtalo de nuevo.' },
+        { error: 'El CAPTCHA es requerido.' },
         { status: 400 }
       );
     }
-    if (entry.expiresAt < Date.now()) {
-      captchaStore.delete(captchaToken);
+
+    const captchaData = verifyCaptchaToken(captchaToken);
+    if (!captchaData) {
+      return NextResponse.json(
+        { error: 'El CAPTCHA no es válido. Por favor recárgalo e inténtalo de nuevo.' },
+        { status: 400 }
+      );
+    }
+    if (captchaData.expiresAt < Date.now()) {
       return NextResponse.json(
         { error: 'El CAPTCHA ha caducado. Por favor recárgalo e inténtalo de nuevo.' },
         { status: 400 }
       );
     }
-    if (parseInt(captchaAnswer, 10) !== entry.answer) {
+    if (parseInt(captchaAnswer, 10) !== captchaData.answer) {
       return NextResponse.json(
         { error: 'Respuesta de CAPTCHA incorrecta. Inténtalo de nuevo.' },
         { status: 400 }
       );
     }
-    // Invalidate used captcha (one-time use)
-    captchaStore.delete(captchaToken);
 
+    // --- Send email via nodemailer ---
     const targetEmail = process.env.EMAIL_TO || 'rparradev24@gmail.com';
-    const pass = process.env.EMAIL_PASS;
-    const isCustomSmtpConfigured =
-      pass &&
-      pass !== 'your_gmail_app_password_here' &&
-      pass.trim() !== '';
+    const emailUser = process.env.EMAIL_USER || targetEmail;
+    const emailPass = process.env.EMAIL_PASS;
 
-    // ─── STRATEGY 1: Custom SMTP if configured in .env.local ─────────────
-    if (isCustomSmtpConfigured) {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL_USER || targetEmail,
-          pass: process.env.EMAIL_PASS,
-        },
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-        socketTimeout: 5000,
-      });
-
-      await transporter.sendMail({
-        from: `"Roma Code Portfolio" <${process.env.EMAIL_USER || targetEmail}>`,
-        to: targetEmail,
-        replyTo: email,
-        subject: `📬 Nuevo mensaje de ${name} — Roma Code Portfolio`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #e0e3e5; border-radius: 16px; padding: 32px;">
-            <h2 style="color: #a5c8ff; margin-top: 0;">Nuevo mensaje de contacto</h2>
-            <p><strong>De:</strong> ${name} (&lt;${email}&gt;)</p>
-            <p><strong>Mensaje:</strong></p>
-            <blockquote style="background: rgba(255,255,255,0.05); padding: 16px; border-left: 4px solid #a5c8ff; border-radius: 8px;">
-              ${message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
-            </blockquote>
-          </div>
-        `,
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: '¡Correo enviado con éxito!',
-      });
-    }
-
-    const requestOrigin =
-      req.headers.get('origin') ||
-      (req.headers.get('host') ? `https://${req.headers.get('host')}` : 'https://roma-code.vercel.app');
-
-    const formSubmitUrl = `https://formsubmit.co/ajax/${targetEmail}`;
-
-    const serviceResponse = await fetch(formSubmitUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Origin': requestOrigin,
-        'Referer': `${requestOrigin}/`,
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        message,
-        _subject: `📬 Nuevo mensaje de ${name} — Roma Code Portfolio`,
-        _template: 'table',
-        _captcha: 'false',
-      }),
-    });
-
-    const serviceData = await serviceResponse.json();
-
-    if (serviceResponse.ok && (serviceData.success === 'true' || serviceData.success === true)) {
-      return NextResponse.json({
-        success: true,
-        message: '¡Mensaje enviado a tu correo rparradev24@gmail.com con éxito!',
-      });
-    } else if (serviceData.message?.includes('Activation')) {
-      return NextResponse.json({
-        success: true,
-        message: 'FormSubmit ha enviado un correo de activación inicial a rparradev24@gmail.com. ¡Por favor revisa tu bandeja/spam y haz clic en Activar!',
-      });
-    } else {
+    if (!emailPass || emailPass === 'your_gmail_app_password_here' || emailPass.trim() === '') {
+      console.error('EMAIL_PASS is not configured in environment variables.');
       return NextResponse.json(
-        { error: serviceData.message || 'Error al procesar el envío del correo.' },
+        { error: 'El servidor de correo no está configurado. Contacta al administrador.' },
         { status: 500 }
       );
     }
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: emailUser,
+        pass: emailPass,
+      },
+    });
+
+    await transporter.sendMail({
+      from: `"Roma Code Portfolio" <${emailUser}>`,
+      to: targetEmail,
+      replyTo: email,
+      subject: `📬 Nuevo mensaje de ${name} — Roma Code Portfolio`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #e0e3e5; border-radius: 16px; padding: 32px;">
+          <h2 style="color: #a5c8ff; margin-top: 0;">Nuevo mensaje de contacto</h2>
+          <p><strong>De:</strong> ${name} (&lt;${email}&gt;)</p>
+          <p><strong>Mensaje:</strong></p>
+          <blockquote style="background: rgba(255,255,255,0.05); padding: 16px; border-left: 4px solid #a5c8ff; border-radius: 8px;">
+            ${message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+          </blockquote>
+        </div>
+      `,
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: '¡Correo enviado con éxito!',
+    });
+
   } catch (error: unknown) {
     const errMessage = error instanceof Error ? error.message : 'Error desconocido';
     console.error('Contact route error:', errMessage);
