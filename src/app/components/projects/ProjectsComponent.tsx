@@ -48,6 +48,7 @@ export const ProjectsComponent = () => {
               {t.projects.subtitle}
             </p>
           </div>
+          {/* Pagination arrows — uncomment when there are more projects to paginate
           <div className="flex gap-4">
             <button
               className="p-3 rounded-full border border-white/10 hover:border-primary transition-colors"
@@ -62,6 +63,7 @@ export const ProjectsComponent = () => {
               <span className="material-symbols-outlined">east</span>
             </button>
           </div>
+          */}
         </div>
 
         {/* Grid */}
