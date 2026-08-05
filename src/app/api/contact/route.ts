@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
     const { error: resendError } = await resend.emails.send({
       from: 'Roma Code Portfolio <onboarding@resend.dev>',
       to: [targetEmail],
-      reply_to: email,
+      replyTo: email,
       subject: `📬 Nuevo mensaje de ${name} — Roma Code Portfolio`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #e0e3e5; border-radius: 16px; padding: 32px;">
