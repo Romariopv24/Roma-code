@@ -44,19 +44,19 @@ export const SkillsSection = () => {
             <span className="material-symbols-outlined" style={{ fontSize: '200px' }}>code</span>
           </div>
 
-          <h2 className="font-hanken font-bold text-[48px] leading-[56px] text-on-surface mb-12">
+          <h2 className="font-hanken font-bold text-[28px] sm:text-[36px] md:text-[48px] leading-[1.2] text-on-surface mb-8 md:mb-12">
             {t.skills.title}{' '}
             <span className="text-primary">{t.skills.titleHighlight}</span>
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-6">
             {skills.map((skill) => (
               <div
                 key={skill.label}
-                className="chip-gradient rounded-xl p-4 flex items-center gap-3 hover:bg-tertiary/10 transition-colors cursor-default"
+                className="chip-gradient rounded-xl p-3 md:p-4 flex items-center gap-2 min-w-0 overflow-hidden hover:bg-tertiary/10 transition-colors cursor-default"
               >
-                <span className="material-symbols-outlined text-tertiary">{skill.icon}</span>
-                <span className="font-geist text-[14px] leading-[20px] tracking-[0.05em] font-medium">
+                <span className="material-symbols-outlined text-tertiary shrink-0 text-[20px]">{skill.icon}</span>
+                <span className="font-geist text-[12px] md:text-[14px] leading-[20px] tracking-[0.05em] font-medium truncate">
                   {skill.label}
                 </span>
               </div>
